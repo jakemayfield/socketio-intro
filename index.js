@@ -7,14 +7,15 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
   socket.on('chat message', (msg) => {
-    console.log('Message: ' + msg);
+    io.emit('chat message', msg);
   });
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    //
   });
 });
+
+io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' }); // This will emit the event to all connected sockets
 
 http.listen(3000, () => {
   console.log('Listening on *:3000');
